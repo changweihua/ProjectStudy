@@ -1,0 +1,14 @@
+﻿<metro:Window x:Class="FlashGame.InitWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:metro="http://schemas.codeplex.com/elysium" 
+        xmlns:params="http://schemas.codeplex.com/elysium/params"
+        params:Manager.Theme="Light" 
+        params:Manager.AccentBrush="{x:Static metro:AccentBrushes.Blue}" 
+        params:Manager.ContrastBrush="White" 
+        Background="{DynamicResource BackgroundBrush}"
+        Title="InitWindow" Height="300" Width="647" Loaded="Window_Loaded" WindowStyle="None">
+    <Grid>
+        
+    </Grid>
+</metro:Window>

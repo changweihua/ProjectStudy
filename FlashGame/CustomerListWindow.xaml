@@ -1,0 +1,106 @@
+﻿<metro:Window x:Class="FlashGame.CustomerListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:flash="clr-namespace:AxShockwaveFlashObjects;assembly=AxInterop.ShockwaveFlashObjects"
+        xmlns:metro="http://schemas.codeplex.com/elysium" 
+        xmlns:params="http://schemas.codeplex.com/elysium/params"
+        params:Manager.Theme="Dark" 
+        params:Manager.AccentBrush="{x:Static metro:AccentBrushes.Blue}" 
+        params:Manager.ContrastBrush="White" 
+        Background="{DynamicResource BackgroundBrush}"
+        xmlns:local="clr-namespace:FlashGame"
+        Title="CustomerListWindow" Height="300" Width="300">
+    <Window.Resources>
+        <local:ImagePathConverter x:Key="ImagePathConverter"></local:ImagePathConverter>
+
+        <local:TileView x:Key="ImageView">
+            <local:TileView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="150" HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                        <Image Source="{Binding Path=FullName}"></Image>
+                        <TextBlock Foreground="White" TextWrapping="Wrap" HorizontalAlignment="Center"  Text="{Binding Path=Name}" ></TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </local:TileView.ItemTemplate>
+        </local:TileView>
+
+        <local:TileView x:Key="ImageDetailView" SelectedBackground="LightSteelBlue">
+            <local:TileView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="Col2"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <!--<Image Margin="5"  Width="100" Source="{Binding Path=ProductImagePath, Converter={StaticResource ImagePathConverter}}"></Image>-->
+                        <Image Margin="5"  Width="100" Source="{Binding Path=FullName}" />
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <TextBlock Foreground="White" Text="{Binding Path=Name}"></TextBlock>
+                            <TextBlock FontWeight="Bold" Text="{Binding Path=Name}"></TextBlock>
+                            <TextBlock Foreground="White" Text="{Binding Path=Name}"></TextBlock>
+                            <!--<TextBlock Text="{Binding Path=UnitCost, StringFormat={}{0:C}}"></TextBlock>-->
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </local:TileView.ItemTemplate>
+        </local:TileView>
+
+        <GridView x:Key="GridView">
+            <GridView.Columns>
+                <GridViewColumn Header="名称" DisplayMemberBinding="{Binding Path=Name}" />
+                <GridViewColumn Header="描述" DisplayMemberBinding="{Binding Path=Name}" />
+                <!--<GridViewColumn Header="Price" DisplayMemberBinding="{Binding Path=UnitCost, StringFormat={}{0:C}}" />-->
+            </GridView.Columns>
+        </GridView>
+
+
+    </Window.Resources>
+    <Decorator metro:Window.IsApplicationBarHost="False">
+        <Grid Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <ListView Name="lstProducts" View="{StaticResource GridView}">
+            </ListView>
+            <Grid Grid.Row="1" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Margin="5" VerticalAlignment="Center">选择展示模式:</TextBlock>
+                <ComboBox Grid.Column="1" Margin="5" Width="150" HorizontalAlignment="Left" 
+                  Name="lstView" SelectionChanged="lstView_SelectionChanged">
+                    <ComboBoxItem>GridView</ComboBoxItem>
+                    <ComboBoxItem>ImageView</ComboBoxItem>
+                    <ComboBoxItem>ImageDetailView</ComboBoxItem>
+                </ComboBox>
+            </Grid>
+        </Grid>
+    </Decorator>
+
+    <metro:Window.TitleBar>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" 
+             Content="?" 
+             Style="{DynamicResource {x:Static metro:Window.DefaultCaptionButtonStyleKey}}"/>
+        </Grid>
+    </metro:Window.TitleBar>
+    <metro:Window.ApplicationBar>
+        <metro:ApplicationBar Padding="5">
+            <metro:CommandButton Header="Notification" >
+                <Rectangle Fill="Black" Stroke="Black" Width="24" Height="12"/>
+            </metro:CommandButton>
+            <metro:CommandButton metro:ApplicationBar.Dock="Left">
+                <Rectangle Fill="Red" Stroke="Black" Width="24" Height="12"/>
+            </metro:CommandButton>
+        </metro:ApplicationBar>
+    </metro:Window.ApplicationBar>
+    </metro:Window>

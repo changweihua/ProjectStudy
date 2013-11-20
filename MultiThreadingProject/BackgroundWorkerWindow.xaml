@@ -1,0 +1,18 @@
+﻿<Window x:Class="MultiThreadingProject.BackgroundWorkerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:cm="clr-namespace:System.ComponentModel;assembly=System"
+        Title="BackgroundWorkerWindow" Height="300" Width="300">
+    <Window.Resources>
+        <cm:BackgroundWorker x:Key="backgroundWorker" WorkerSupportsCancellation="True" WorkerReportsProgress="True" DoWork="BackgroundWorker_DoWork" RunWorkerCompleted="BackgroundWorker_RunWorkerCompleted" ProgressChanged="BackgroundWorker_ProgressChanged" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel x:Name="backgroundWorkerControlPanel" ButtonBase.Click="backgroundWorkerControlPanel_Click" >
+            <Button Tag="Start" Content="启动" />
+            <Button Tag="Cancel" Content="取消" />
+        </StackPanel>
+    </Grid>
+</Window>

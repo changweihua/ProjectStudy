@@ -1,0 +1,14 @@
+﻿<Window x:Class="WpfApplication.WPFMediaKitWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wpfmedia="clr-namespace:WPFMediaKit.DirectShow.Controls;assembly=WPFMediaKit"
+        Title="WPFMediaKitWindow" Loaded="Window_Loaded" Height="300" Width="300">
+    <Grid>
+        <StackPanel>
+            <ComboBox Name="cb" SelectionChanged="cb_SelectionChanged" />
+            <wpfmedia:VideoCaptureElement Name="vce" Height="270" />
+            <Button Content="拍照" x:Name="btnCapture" Click="btnCapture_Click" />
+            <Button Content="保存" x:Name="btnSave" Click="btnSave_Click" />
+        </StackPanel>
+    </Grid>
+</Window>

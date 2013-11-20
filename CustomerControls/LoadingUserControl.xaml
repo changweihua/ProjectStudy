@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="CustomerControls.LoadingUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CustomerControls"
+             mc:Ignorable="d" 
+            d:DesignHeight="768" d:DesignWidth="1280" Background="#FF0E0F14">
+    <Grid>
+        <Grid HorizontalAlignment="Center" Height="100" VerticalAlignment="Center" Width="500" Margin="0,200,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.15*"/>
+                <ColumnDefinition Width="0.85*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="0/0" VerticalAlignment="Center" Foreground="#FF0FB6E2" FontSize="18.667" x:Name="textBlock_LoadingTips"/>
+            <local:LoadingProgressUserControl Grid.Column="1" x:Name="loadingProgress"/>
+        </Grid>
+
+    </Grid>
+</UserControl>

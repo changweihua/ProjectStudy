@@ -1,0 +1,35 @@
+﻿<Window x:Class="CoverFlow.TestCoverFlowUserControl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:CoverFlow"
+        Title="TestCoverFlowUserControl" WindowState="Maximized" Height="300" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.7*" />
+            <RowDefinition Height="0.05*" />
+            <RowDefinition Height="0.25*" />
+        </Grid.RowDefinitions>
+        <local:CoverFlowUserControl DistanceBetweenModel="0.8" ModelAngle="60" ModelFromCenter="1.5" ZDistance="0" x:Name="coverflow" ModelBorderBrush="Aqua" SourcePath="C:\\Users\\Public\\Pictures\\Sample Pictures" />
+        <TextBlock Grid.Row="1" Text="{Binding Path=Message, ElementName=coverflow, Mode=Default}" />
+        <Expander Header="调整控件参数" Grid.Row="2" Background="AliceBlue">
+            <UniformGrid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Columns="2" Rows="2">
+                <StackPanel Margin="5">
+                    <TextBlock Text="模型偏转角度" />
+                    <Slider ValueChanged="Slider_ValueChanged" HorizontalAlignment="Stretch" VerticalAlignment="Center" SmallChange="1" Maximum="90" Value="{Binding Path=ModelAngle, ElementName=coverflow, Mode=Default}"/>
+                </StackPanel>
+                <StackPanel Margin="5">
+                    <TextBlock Text="中心距离其两侧模型的距离" />
+                    <Slider ValueChanged="Slider_ValueChanged" HorizontalAlignment="Stretch" VerticalAlignment="Center" Value="{Binding Path=ModelFromCenter, ElementName=coverflow, Mode=Default}" Maximum="3" Minimum="1" SmallChange="0.5"/>
+                </StackPanel>
+                <StackPanel Margin="5">
+                    <TextBlock Text="模型相互之间的间距" />
+                    <Slider ValueChanged="Slider_ValueChanged" VerticalAlignment="Center" Value="{Binding Path=DistanceBetweenModel, ElementName=coverflow, Mode=Default}" Maximum="1" Minimum="0.3"/>
+                </StackPanel>
+                <StackPanel Margin="5">
+                    <TextBlock Text="模型距离眼睛的距离" />
+                    <Slider ValueChanged="Slider_ValueChanged" VerticalAlignment="Center" Value="{Binding Path=ZDistance, ElementName=coverflow, Mode=Default}" Maximum="3"/>
+                </StackPanel>
+            </UniformGrid>
+        </Expander>
+    </Grid>
+</Window>

@@ -1,0 +1,14 @@
+﻿<Window x:Class="WpfApplication.CapruteImageWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:wfi ="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"  
+        xmlns:aforge ="clr-namespace:AForge.Controls;assembly=AForge.Controls"
+        Title="CapruteImageWindow" Loaded="Window_Loaded" Height="300" Width="300">
+    <Grid>
+        <WindowsFormsHost x:Name="winForm">
+            <aforge:VideoSourcePlayer x:Name="sourcePlayer" Width="300" Height="360">                      
+            </aforge:VideoSourcePlayer>
+        </WindowsFormsHost>
+    </Grid>
+</Window>

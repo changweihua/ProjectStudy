@@ -1,0 +1,10 @@
+﻿<Window xmlns:shell="clr-namespace:Microsoft.Windows.Shell;assembly=Microsoft.Windows.Shell"  x:Class="FileWall.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:FileWall"
+        xmlns:fc="clr-namespace:FileWall.Controls"
+        Title="MainWindow" Height="350" Width="525" xmlns:cc="clr-namespace:CustomerControls;assembly=CustomerControls">
+        <Grid x:Name="gridRoot">
+            <fc:LoadingUserControl x:Name="loadingUserControl" />
+        </Grid>
+</Window>

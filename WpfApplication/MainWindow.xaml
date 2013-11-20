@@ -1,0 +1,8 @@
+﻿<Window x:Class="WpfApplication.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <Button Content="测试自定义 MessageBox" Name="btnTestCustomerMessageBox" Click="btnTestCustomerMessageBox_Click" />
+    </Grid>
+</Window>
