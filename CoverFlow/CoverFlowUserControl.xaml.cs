@@ -536,24 +536,6 @@ namespace CoverFlow
 
         #region 资源加载方法
 
-        private void Adjust(int index)
-        {
-            var query = this.viewport3D.Children.OfType<InteractiveVisual3D>().Skip(Count / 2 - 3).Take(7);
-            var result = this.viewport3D.Children.OfType<InteractiveVisual3D>().Except(query);
-            //result.ToList().ForEach((visual3D) => {  });
-            Debug.WriteLine("总长度 {0}", this.viewport3D.Children.OfType<InteractiveVisual3D>().Count());
-            this.viewport3D.Children.ToList().ForEach((_) => { Debug.WriteLine(_.GetType().ToString()); });
-            Debug.WriteLine("需要显示集合长度 {0}", query.Count());
-            Debug.WriteLine("差集长度 {0}", result.Count());
-            var list = result.ToList();
-            for (int i = 0; i < list.Count; i++)
-            {
-                //list[i].SetValue(FrameworkElement.VisibilityProperty, Visibility.Hidden);
-                list[i].Geometry = null;
-                //list[i].IsBackVisible
-            }
-        }
-
         /// <summary>
         /// 根据指定的数据源加载资源
         /// </summary>
