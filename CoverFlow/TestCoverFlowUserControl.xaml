@@ -6,11 +6,18 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.7*" />
-            <RowDefinition Height="0.05*" />
-            <RowDefinition Height="0.25*" />
+            <RowDefinition Height="0.15*" />
+            <RowDefinition Height="0.15*" />
         </Grid.RowDefinitions>
         <local:CoverFlowUserControl DistanceBetweenModel="0.8" ModelAngle="60" ModelFromCenter="1.5" ZDistance="0" x:Name="coverflow" ModelBorderBrush="Aqua" SourcePath="C:\\Users\\Public\\Pictures\\Sample Pictures" />
         <TextBlock Grid.Row="1" Text="{Binding Path=Message, ElementName=coverflow, Mode=Default}" />
+        <!--<ListBox Grid.Row="1" DataContext="{Binding ElementName=coverflow, Path=DebugMessages}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=ActionMessage, ElementName=coverflow, Mode=Default}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>-->
         <Expander Header="调整控件参数" Grid.Row="2" Background="AliceBlue">
             <UniformGrid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" Columns="2" Rows="2">
                 <StackPanel Margin="5">

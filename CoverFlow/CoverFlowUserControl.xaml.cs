@@ -16,16 +16,28 @@ using System.IO;
 using System.Windows.Media.Media3D;
 using _3DTools;
 using System.Windows.Media.Animation;
+using System.Collections.ObjectModel;
 
 namespace CoverFlow
 {
     /// <summary>
     /// CoverFlowUserControl.xaml 的交互逻辑
+    /// 
+    /// Todo: 将同步改为异步加载资源
+    /// 
     /// </summary>
     public partial class CoverFlowUserControl : UserControl
     {
+        /// <summary>
+        /// 中间索引两侧展示数量
+        /// </summary>
         int SideCount = 3;
+        /// <summary>
+        /// 资源索引集合
+        /// </summary>
         IEnumerable<int> Values = null;
+
+        #region 构造函数
 
         public CoverFlowUserControl()
         {
@@ -33,32 +45,40 @@ namespace CoverFlow
 
             this.Loaded += (sender, e) =>
             {
-                this.LoadModelToViewport3D(LoadImage(SourcePath).ToList());
+                DebugMessages = new ObservableCollection<DebugMessage>();
+                DebugMessages.Add(new DebugMessage { ActionName = "CoverFlowUserControl", ActionTime = DateTime.Now.ToString(), ActionMessage = "开始努力的加载资源" }); 
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    this.LoadModelToViewport3D(LoadImage(SourcePath).ToList());
+                    Message = "资源加载完毕，可以开始进行捕捉";
+                }), System.Windows.Threading.DispatcherPriority.Loaded);
             };
-
-            this.MouseDown += (sender, e) =>
-            {
-                
-            };
-
-            
 
         }
 
+        #endregion
+
         #region 公共方法
 
+        /// <summary>
+        /// 得到索引集合
+        /// </summary>
+        /// <param name="index">中间索引值</param>
+        /// <param name="result">需要展示的索引集合</param>
+        /// <param name="others">不需要展示的索引集合</param>
         void GetList(int index, out IEnumerable<int> result, out IEnumerable<int> others)
         {
-            //			IEnumerable<int> result = null;
-
             result = GetList(index);
             others = Values.Except(result);
         }
 
+        /// <summary>
+        /// 得到需要展示的索引集合
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         IEnumerable<int> GetList(int index)
         {
-            //IEnumerable<int> result = Enumerable.Range(index - 3, 3).Concat(Enumerable.Range(index, 4));
-
             IEnumerable<int> result = null;
 
             if (index < SideCount)
@@ -87,7 +107,6 @@ namespace CoverFlow
 
             for (int i = 0; i < list.Count; i++)
             {
-
                 InteractiveVisual3D iv3d = ivs[list[i]] as InteractiveVisual3D;
 
                 if (iv3d != null)
@@ -97,8 +116,6 @@ namespace CoverFlow
                     double offsetZ = 0;
 
                     GetTransformOfInteractiveVisual3D(i, out angle, out offsetX, out offsetZ);
-
-                    //Debug.WriteLine("i = {3}, Angle = {0}, OffsetX = {1}, OffsetZ = {2}", angle, offsetX, offsetZ, i);
 
                     NameScope.SetNameScope(this, new NameScope());
                     this.RegisterName("iv3d", iv3d);
@@ -144,7 +161,7 @@ namespace CoverFlow
         void ReSetInteractiveVisual3D(List<int> list)
         {
             var ivs = this.viewport3D.Children.OfType<InteractiveVisual3D>().ToList();
-
+            
             for (int i = 0; i < list.Count; i++)
             {
 
@@ -155,8 +172,6 @@ namespace CoverFlow
                     double angle = 0;
                     double offsetX = 500;
                     double offsetZ = 0;
-
-                    //Debug.WriteLine("i = {3}, Angle = {0}, OffsetX = {1}, OffsetZ = {2}", angle, offsetX, offsetZ, i);
 
                     NameScope.SetNameScope(this, new NameScope());
                     this.RegisterName("iv3d", iv3d);
@@ -191,10 +206,15 @@ namespace CoverFlow
             }
         }
 
-
+        /// <summary>
+        /// 得到变换参数值
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="angle"></param>
+        /// <param name="offsetX"></param>
+        /// <param name="offsetZ"></param>
         void GetTransformOfInteractiveVisual3D(int index, out double angle, out double offsetX, out double offsetZ)
         {
-            Debug.WriteLine("依照InteractiveVisual3D在列表中的序号来变换其位置等");
             int midIndex = 3;
             double offsetIndex = index - midIndex;
             //旋转，两翼的图片各旋转一定的度数
@@ -255,10 +275,6 @@ namespace CoverFlow
                         offsetZ = -1;
                     }
 
-                    
-
-                    //Debug.WriteLine("MiddleIndex = {2}, Index of {0} OffsetX = {1}", j - 1, offsetX, IntermediateIndex);
-
                     NameScope.SetNameScope(this, new NameScope());
                     this.RegisterName("iv3d", iv3d);
                     Duration time = new Duration(TimeSpan.FromSeconds(0.3));
@@ -306,8 +322,7 @@ namespace CoverFlow
         /// <param name="offsetZ"></param>
         void GetTransformOfInteractiveVisual3D(int index, double midIndex, out double angle, out double offsetX, out double offsetZ)
         {
-            Debug.WriteLine("依照InteractiveVisual3D在列表中的序号来变换其位置等");
-
+            
             double offsetIndex = index - midIndex;
             //旋转，两翼的图片各旋转一定的度数
             angle = 0;
@@ -343,8 +358,6 @@ namespace CoverFlow
         /// <param name="source"></param>
         private void LoadModelToViewport3D(IList<string> source)
         {
-            Debug.WriteLine("添加图片到视口");
-
             if (source == null || source.Count == 0)
             {
                 return;
@@ -360,8 +373,6 @@ namespace CoverFlow
             }
             //确定中间索引
             IntermediateIndex = Count / 2;
-
-            //ReLayoutInteractiveVisual3D();
 
         }
 
@@ -412,7 +423,6 @@ namespace CoverFlow
             Border border = new Border();
             border.BorderBrush = ModelBorderBrush;
             border.BorderThickness = new Thickness(1);
-            //border.CornerRadius = new CornerRadius(3);
             border.Child = image;
             border.Background = Brushes.Transparent;//防止有时候无法捕捉到触摸事件
            
@@ -421,20 +431,6 @@ namespace CoverFlow
             {
                 Debug.WriteLine("中间值 {0}, 当前索引 {1}", Count / 2, index);
                 Debug.WriteLine("距离最小索引值长度 {0}, 距离最大索引值 {1}", index, Count - index - 1);
-
-                //List<int> list = (Enumerable.Range(index - 3, 3).Concat(Enumerable.Range(index, Count - index > 4 ? 4 : Count - index))).ToList();
-
-                //if (index == Count - 1)
-                //{
-                //    list.AddRange(Enumerable.Range(0, 3));
-                //}
-
-                //Debug.Write("需要展示的资源索引 => ");
-                //foreach (var item in list)
-                //{
-                //    Debug.Write("\t" + item.ToString());
-                //}
-                //ReLayoutInteractiveVisual3D(list);
 
                 this.IntermediateIndex = index;
 
@@ -463,7 +459,6 @@ namespace CoverFlow
             {
                 startPoint = e.GetTouchPoint(border);
                 Message = "开始捕捉";
-                //e.Handled = true;
             };
 
             image.TouchUp += (sender, e) =>
@@ -485,8 +480,6 @@ namespace CoverFlow
                 }
                 e.Handled = true;
             };
-
-            Debug.WriteLine("IntermediateIndex = {0}", IntermediateIndex);
 
             return border;
         }
@@ -568,8 +561,7 @@ namespace CoverFlow
         /// <returns></returns>
         private IEnumerable<string> LoadImage(string path)
         {
-            Debug.WriteLine("加载图片");
-
+            DebugMessages.Add(new DebugMessage { ActionName = "LoadImage", ActionTime = DateTime.Now.ToString(), ActionMessage = "加载图片" });
             List<string> list = null;
 
             if (Directory.Exists(path))
@@ -610,24 +602,6 @@ namespace CoverFlow
             CoverFlowUserControl uc = sender as CoverFlowUserControl;
             if (uc != null)
             {
-                Debug.WriteLine("我被更改了");
-                //if (arg.Property.Name == "IntermediateIndex")
-                //{
-                //    int index = (int)arg.NewValue;
-                //    List<int> list = (Enumerable.Range(index - 3, 3).Concat(Enumerable.Range(index, uc.Count - index > 4 ? 4 : uc.Count - index))).ToList();
-
-                //    if (index == uc.Count - 1)
-                //    {
-                //        list.AddRange(Enumerable.Range(0, 3));
-                //    }
-
-                //    Debug.Write("需要展示的资源索引 => ");
-                //    foreach (var item in list)
-                //    {
-                //        Debug.Write("\t" + item.ToString());
-                //    }
-                //    uc.ReLayoutInteractiveVisual3D(list);
-                //}
                 if (arg.Property.Name == "IntermediateIndex")
                 {
                     int index = (int)arg.NewValue;
@@ -637,7 +611,6 @@ namespace CoverFlow
                     uc.ReLayoutInteractiveVisual3D(result.ToList());
                     uc.ReSetInteractiveVisual3D(others.ToList());
                 }
-
             }
         }
 
@@ -646,18 +619,31 @@ namespace CoverFlow
         #region 依赖属性
 
 
+        /// <summary>
+        /// 所有操作的调试信息
+        /// </summary>
+        public ObservableCollection<DebugMessage> DebugMessages
+        {
+            get { return (ObservableCollection<DebugMessage>)GetValue(DebugMessagesProperty); }
+            set { SetValue(DebugMessagesProperty, value); }
+        }
 
+        public static readonly DependencyProperty DebugMessagesProperty =
+            DependencyProperty.Register("DebugMessages", typeof(ObservableCollection<DebugMessage>), typeof(CoverFlowUserControl), new UIPropertyMetadata(null));
+
+
+        /// <summary>
+        /// 每一个操作的信息，方便调试
+        /// </summary>
         public string Message
         {
             get { return (string)GetValue(MessageProperty); }
             set { SetValue(MessageProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for Message.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty MessageProperty =
             DependencyProperty.Register("Message", typeof(string), typeof(CoverFlowUserControl), new UIPropertyMetadata("尚未捕捉到"));
 
-        
 
         /// <summary>
         /// 当前索引
@@ -671,8 +657,6 @@ namespace CoverFlow
         public static readonly DependencyProperty CurrentIndexProperty =
             DependencyProperty.Register("CurrentIndex", typeof(int), typeof(CoverFlowUserControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(CustomPropertyChangedCallback)));
 
-        
-
         /// <summary>
         /// 中间索引
         /// </summary>
@@ -684,7 +668,6 @@ namespace CoverFlow
 
         public static readonly DependencyProperty IntermediateIndexProperty =
             DependencyProperty.Register("IntermediateIndex", typeof(int), typeof(CoverFlowUserControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(CustomPropertyChangedCallback)));
-
 
         /// <summary>
         /// 两个模型之间的距离，即 X 轴
@@ -801,6 +784,9 @@ namespace CoverFlow
         /// </summary>
         public int Count { get; private set; }
 
+        /// <summary>
+        /// 起始点，用户按下去的初始点位置
+        /// </summary>
         private TouchPoint startPoint;
 
         #endregion
